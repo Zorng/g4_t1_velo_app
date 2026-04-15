@@ -1,15 +1,15 @@
 
 
+import 'package:g4_t1_velo_app/data/repositories/station/station_repository.dart';
+import 'package:g4_t1_velo_app/data/repositories/station/station_repository_mock.dart';
 import 'package:g4_t1_velo_app/main_common.dart';
 import 'package:provider/provider.dart';
 
 /// Configure provider dependencies for dev environment
 List<InheritedProvider> get devProviders {
-  
-
   return [
     // 1 - Inject repositories
-    
+    Provider<StationRepository>(create: (_) => StationRepositoryMock()),    
 
     // 2 - Inject the player state
     
