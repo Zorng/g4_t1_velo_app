@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:g4_t1_velo_app/ui/theme/theme.dart';
 
-class BookingInfoRow extends StatelessWidget {
+class BookingInfoTile extends StatelessWidget {
   final String label;
   final String value;
 
-  const BookingInfoRow({
+  const BookingInfoTile({
     super.key,
     required this.label,
     required this.value,

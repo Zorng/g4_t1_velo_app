@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:g4_t1_velo_app/model/bike_slot.dart';
 import 'package:g4_t1_velo_app/model/pass.dart';
 import 'package:g4_t1_velo_app/ui/screens/booking/viewmodel/booking_viewmodel.dart';
 import 'package:g4_t1_velo_app/ui/screens/subscriptions/subscriptions_screen.dart';
@@ -11,29 +10,79 @@ import 'package:g4_t1_velo_app/ui/screens/booking/widget/pass_applied_card.dart'
 import 'package:g4_t1_velo_app/ui/widgets/primary_button.dart';
 import 'package:g4_t1_velo_app/ui/widgets/selectable_card.dart';
 import 'package:g4_t1_velo_app/ui/screens/booking/widget/section_title.dart';
+import 'package:g4_t1_velo_app/ui/utils/async_value.dart';
 import 'package:provider/provider.dart';
 
 class BookingContent extends StatelessWidget {
-  final BikeSlot slot;
-
-  const BookingContent({super.key, required this.slot});
+  const BookingContent({super.key});
 
   Future<void> _navigateToSubscriptions(
     BuildContext context,
-    BookingViewModel viewModel,
+    BookingViewModel vm,
   ) async {
     final pass = await Navigator.of(context).push<Pass>(
       MaterialPageRoute(builder: (_) => const SubscriptionsScreen()),
     );
     if (pass != null) {
-      viewModel.onPassPurchased(pass);
+      await vm.onPassPurchased(pass);
+    }
+  }
+
+  Future<void> _onConfirmPressed(
+    BuildContext context,
+    BookingViewModel vm,
+  ) async {
+    await vm.confirmBooking();
+    if (!context.mounted) return;
+
+    if (vm.confirmValue?.state == AsyncValueState.success) {
+      final bikeNo = vm.slot?.bike?.bikeNo ?? '';
+      Navigator.of(context).pop();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Bike No. $bikeNo Successfully Booked')),
+      );
+    } else if (vm.confirmValue?.state == AsyncValueState.error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            vm.confirmValue!.error?.toString() ?? 'Booking failed',
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.watch<BookingViewModel>();
-    final bikeNo = slot.bike?.bikeNo ?? 'Unknown';
+    final vm = context.watch<BookingViewModel>();
+
+    final Widget body;
+    if (vm.isInitializing) {
+      body = const Center(child: CircularProgressIndicator());
+    } else if (vm.hasInitError) {
+      body = Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text('Failed to load booking details'),
+            const SizedBox(height: 12),
+            TextButton(
+              onPressed: vm.retry,
+              child: const Text('Retry'),
+            ),
+          ],
+        ),
+      );
+    } else {
+      body = _buildForm(context, vm);
+    }
+
+    return body;
+  }
+
+  Widget _buildForm(BuildContext context, BookingViewModel vm) {
+    final isConfirming = vm.confirmValue?.state == AsyncValueState.loading;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -43,18 +92,16 @@ class BookingContent extends StatelessWidget {
           const BookingHeader(),
           const SizedBox(height: 24),
 
-          BookingInfoCard(slot: slot),
+          BookingInfoCard(slot: vm.slot!),
           const SizedBox(height: 28),
 
           SectionTitle(
-            title: viewModel.hasPass
-                ? 'Your Subscription Plan'
-                : 'Choose how to ride',
+            title: vm.hasPass ? 'Your Subscription Plan' : 'Choose how to ride',
           ),
           const SizedBox(height: 12),
 
-          if (viewModel.hasPass) ...[
-            PassAppliedCard(pass: viewModel.pass!),
+          if (vm.hasPass) ...[
+            PassAppliedCard(pass: vm.activePass!),
           ] else ...[
             const SelectableCard(
               title: 'Single Trip',
@@ -69,43 +116,22 @@ class BookingContent extends StatelessWidget {
               title: 'Buy A Pass',
               subtitle: 'Choose a Day, Monthly or Annual Pass',
               showArrow: true,
-              onTap: () => _navigateToSubscriptions(context, viewModel),
+              onTap: () => _navigateToSubscriptions(context, vm),
             ),
           ],
 
           const Spacer(),
 
           PrimaryButton(
-            label: 'Release Bike',
-            onPressed: () {
-              final messenger = ScaffoldMessenger.of(context);
-              Navigator.of(context).pop();
-              messenger.showSnackBar(
-                SnackBar(
-                  backgroundColor: Colors.green,
-                  behavior: SnackBarBehavior.floating,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  content: Row(
-                    children: [
-                      const Icon(Icons.check_circle, color: Colors.white),
-                      const SizedBox(width: 10),
-                      Text(
-                        'Bike No. $bikeNo Successfully Released',
-                        style: const TextStyle(color: Colors.white),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
+            label: 'Confirm Booking',
+            onPressed:
+                isConfirming ? null : () => _onConfirmPressed(context, vm),
           ),
           const SizedBox(height: 12),
 
-          if (viewModel.hasPass)
+          if (vm.hasPass)
             BookingFooterNote(
-              text: 'Covered by your ${viewModel.pass?.name ?? ''}',
+              text: 'Covered by your ${vm.activePass?.name ?? ''}',
               iconColor: Colors.green,
               textColor: Colors.green,
             )

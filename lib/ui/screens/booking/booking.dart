@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:g4_t1_velo_app/model/bike_slot.dart';
+import 'package:g4_t1_velo_app/data/repositories/bike_slot/bike_slot_repository.dart';
+import 'package:g4_t1_velo_app/data/repositories/booking/booking_repository.dart';
+import 'package:g4_t1_velo_app/data/repositories/users/users_repository.dart';
 import 'package:g4_t1_velo_app/ui/screens/booking/viewmodel/booking_viewmodel.dart';
 import 'package:g4_t1_velo_app/ui/screens/booking/widget/booking_content.dart';
 import 'package:g4_t1_velo_app/ui/theme/theme.dart';
 import 'package:provider/provider.dart';
 
 class Booking extends StatelessWidget {
-  final BikeSlot slot;
+  final String slotId;
 
-  const Booking({super.key, required this.slot});
+  const Booking({super.key, required this.slotId});
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +30,13 @@ class Booking extends StatelessWidget {
         centerTitle: false,
       ),
       body: ChangeNotifierProvider(
-        create: (_) => BookingViewModel(),
-        child: BookingContent(slot: slot),
+        create: (context) => BookingViewModel(
+          context.read<UsersRepository>(),
+          context.read<BookingRepository>(),
+          context.read<BikeSlotRepository>(),
+          slotId,
+        ),
+        child: const BookingContent(),
       ),
     );
   }
