@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:g4_t1_velo_app/model/bike_slot.dart';
-import 'package:g4_t1_velo_app/ui/screens/booking/widget/sub-widgets/booking_info_row.dart';
+import 'package:g4_t1_velo_app/ui/screens/booking/widget/booking_info_row.dart';
 import 'package:g4_t1_velo_app/ui/theme/theme.dart';
 
 class BookingInfoCard extends StatelessWidget {

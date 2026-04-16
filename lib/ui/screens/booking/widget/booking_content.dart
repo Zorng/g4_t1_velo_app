@@ -3,14 +3,14 @@ import 'package:g4_t1_velo_app/model/bike_slot.dart';
 import 'package:g4_t1_velo_app/model/pass.dart';
 import 'package:g4_t1_velo_app/ui/screens/booking/viewmodel/booking_viewmodel.dart';
 import 'package:g4_t1_velo_app/ui/screens/subscriptions/subscriptions_screen.dart';
-import 'package:g4_t1_velo_app/ui/screens/booking/widget/sub-widgets/booking_footer_note.dart';
-import 'package:g4_t1_velo_app/ui/screens/booking/widget/sub-widgets/booking_header.dart';
-import 'package:g4_t1_velo_app/ui/screens/booking/widget/sub-widgets/booking_info_card.dart';
-import 'package:g4_t1_velo_app/ui/screens/booking/widget/sub-widgets/labeled_divider.dart';
-import 'package:g4_t1_velo_app/ui/screens/booking/widget/sub-widgets/pass_applied_card.dart';
+import 'package:g4_t1_velo_app/ui/screens/booking/widget/booking_footer_note.dart';
+import 'package:g4_t1_velo_app/ui/screens/booking/widget/booking_header.dart';
+import 'package:g4_t1_velo_app/ui/screens/booking/widget/booking_info_card.dart';
+import 'package:g4_t1_velo_app/ui/screens/booking/widget/labeled_divider.dart';
+import 'package:g4_t1_velo_app/ui/screens/booking/widget/pass_applied_card.dart';
 import 'package:g4_t1_velo_app/ui/widgets/primary_button.dart';
 import 'package:g4_t1_velo_app/ui/widgets/selectable_card.dart';
-import 'package:g4_t1_velo_app/ui/screens/booking/widget/sub-widgets/section_title.dart';
+import 'package:g4_t1_velo_app/ui/screens/booking/widget/section_title.dart';
 import 'package:provider/provider.dart';
 
 class BookingContent extends StatelessWidget {
