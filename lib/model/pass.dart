@@ -1,13 +1,20 @@
 class Pass {
   const Pass({
     required this.id,
+    required this.name,
+    required this.description,
+    required this.price,
     required this.startDate,
     required this.endDate,
-    required this.isActive,
   });
 
   final String id;
+  final String name;
+  final String description;
+  final double price;
   final DateTime startDate;
   final DateTime endDate;
-  final bool isActive;
+
+  bool get isActive =>
+      DateTime.now().isAfter(startDate) && DateTime.now().isBefore(endDate);
 }
