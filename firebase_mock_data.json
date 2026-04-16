@@ -1,0 +1,89 @@
+{
+  "users": {
+    "user_mock_1": {}
+  },
+  "passes": {
+    "p1": {
+      "name": "Day Pass",
+      "description": "Unlimited rides for 24 hours. Perfect for short visits or daily use.",
+      "price": 2.50,
+      "startDate": "2026-04-17T00:00:00.000Z",
+      "endDate": "2026-04-18T00:00:00.000Z"
+    },
+    "p2": {
+      "name": "Monthly Pass",
+      "description": "Ride anytime for a full month. Ideal for regular commuters.",
+      "price": 25.00,
+      "startDate": "2026-04-17T00:00:00.000Z",
+      "endDate": "2026-05-17T00:00:00.000Z"
+    },
+    "p3": {
+      "name": "Annual Pass",
+      "description": "Best value for frequent riders. Unlimited access all year long.",
+      "price": 199.00,
+      "startDate": "2026-04-17T00:00:00.000Z",
+      "endDate": "2027-04-17T00:00:00.000Z"
+    }
+  },
+  "stations": {
+    "s1": {
+      "name": "Veal Vong Park",
+      "totalSlot": 6,
+      "location": {
+        "longitude": 104.9282,
+        "latitude": 11.5564,
+        "address": "Veal Vong Park, Phnom Penh"
+      }
+    },
+    "s2": {
+      "name": "Riverside Sisowath",
+      "totalSlot": 6,
+      "location": {
+        "longitude": 104.9305,
+        "latitude": 11.5696,
+        "address": "Sisowath Quay, Phnom Penh"
+      }
+    },
+    "s3": {
+      "name": "Central Market",
+      "totalSlot": 4,
+      "location": {
+        "longitude": 104.9172,
+        "latitude": 11.5683,
+        "address": "Phsar Thmei, Phnom Penh"
+      }
+    }
+  },
+  "bicycles": {
+    "b1":  { "bikeNo": "BK-2047" },
+    "b2":  { "bikeNo": "BK-1023" },
+    "b3":  { "bikeNo": "BK-3891" },
+    "b4":  { "bikeNo": "BK-4412" },
+    "b5":  { "bikeNo": "BK-5076" },
+    "b6":  { "bikeNo": "BK-6234" },
+    "b7":  { "bikeNo": "BK-7105" },
+    "b8":  { "bikeNo": "BK-8863" },
+    "b9":  { "bikeNo": "BK-9341" },
+    "b10": { "bikeNo": "BK-0158" }
+  },
+  "slots": {
+    "D-04":   { "stationId": "s1", "bikeId": "b1" },
+    "S1-D02": { "stationId": "s1", "bikeId": "b2" },
+    "S1-D03": { "stationId": "s1", "bikeId": "b3" },
+    "S1-D04": { "stationId": "s1", "bikeId": "b4", "reservedBy": "user_mock_2" },
+    "S1-D05": { "stationId": "s1" },
+    "S1-D06": { "stationId": "s1" },
+
+    "S2-D01": { "stationId": "s2", "bikeId": "b5" },
+    "S2-D02": { "stationId": "s2", "bikeId": "b6" },
+    "S2-D03": { "stationId": "s2", "bikeId": "b7" },
+    "S2-D04": { "stationId": "s2" },
+    "S2-D05": { "stationId": "s2" },
+    "S2-D06": { "stationId": "s2" },
+
+    "S3-D01": { "stationId": "s3", "bikeId": "b8" },
+    "S3-D02": { "stationId": "s3", "bikeId": "b9" },
+    "S3-D03": { "stationId": "s3", "bikeId": "b10" },
+    "S3-D04": { "stationId": "s3" }
+  }
+}
