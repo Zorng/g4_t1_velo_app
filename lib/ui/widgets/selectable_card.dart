@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:g4_t1_velo_app/ui/theme/theme.dart';
 
-class RideOptionCard extends StatelessWidget {
+class SelectableCard extends StatelessWidget {
   final String title;
   final String subtitle;
   final bool isSelected;
   final bool showArrow;
+  final Widget? trailing;
   final VoidCallback? onTap;
 
-  const RideOptionCard({
+  const SelectableCard({
     super.key,
     required this.title,
     required this.subtitle,
     this.isSelected = false,
     this.showArrow = false,
+    this.trailing,
     this.onTap,
   });
 
@@ -24,10 +26,10 @@ class RideOptionCard extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: isSelected
-              ? Colors.orangeAccent.withValues(alpha: 0.15)
-              : Colors.white,
+              ? appTheme.primaryColor.withValues(alpha: 0.15)
+              : appTheme.scaffoldBackgroundColor,
           border: Border.all(
-            color: isSelected ? Colors.orangeAccent : AppColors.greyLight,
+            color: isSelected ? appTheme.primaryColor : AppColors.greyLight,
             width: 1.5,
           ),
           borderRadius: BorderRadius.circular(12),
@@ -47,7 +49,7 @@ class RideOptionCard extends StatelessWidget {
           ),
           trailing: showArrow
               ? Icon(Icons.chevron_right, color: AppColors.neutralDark)
-              : null,
+              : trailing,
         ),
       ),
     );
