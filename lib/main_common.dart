@@ -11,11 +11,15 @@ import 'package:provider/provider.dart';
 /// Launch the application with the given list of providers
 ///
 void mainCommon(List<InheritedProvider> providers) {
+  final app = const MyApp();
+
   runApp(
-    MultiProvider(
-      providers: providers,
-      child: MaterialApp(debugShowCheckedModeBanner: false, home: MyApp()),
-    ),
+    providers.isEmpty
+        ? app
+        : MultiProvider(
+            providers: providers,
+            child: app,
+          ),
   );
 }
 
@@ -54,6 +58,7 @@ class _MyAppState extends State<MyApp> {
             });
           },
           selectedItemColor: appTheme.primaryColor,
+          unselectedItemColor: AppColors.textLight,
           items: [
             BottomNavigationBarItem(
               icon: Icon(Icons.account_circle_rounded,

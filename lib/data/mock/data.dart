@@ -100,9 +100,9 @@ class MockData {
 
     watPhnom.slots.addAll([
       BikeSlot(id: 'slot_wp_01', station: watPhnom),
-      BikeSlot(id: 'slot_wp_02', station: watPhnom, bike: bicycles[3]),
+      BikeSlot(id: 'slot_wp_02', station: watPhnom,),
       BikeSlot(id: 'slot_wp_03', station: watPhnom),
-      BikeSlot(id: 'slot_wp_04', station: watPhnom, bike: bicycles[4]),
+      BikeSlot(id: 'slot_wp_04', station: watPhnom,),
     ]);
 
     riverSide.slots.addAll([
