@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:g4_t1_velo_app/model/bicycle.dart';
-import 'package:g4_t1_velo_app/model/bike_slot.dart';
-import 'package:g4_t1_velo_app/model/location.dart';
-import 'package:g4_t1_velo_app/model/station.dart';
 import 'package:g4_t1_velo_app/ui/screens/account/account_screen.dart';
-import 'package:g4_t1_velo_app/ui/screens/booking/booking.dart';
 import 'package:g4_t1_velo_app/ui/screens/journey/journey_screen.dart';
 import 'package:g4_t1_velo_app/ui/screens/map/map_screen.dart';
 import 'package:g4_t1_velo_app/ui/screens/subscriptions/subscriptions_screen.dart';
@@ -15,27 +10,7 @@ import 'package:provider/provider.dart';
 /// Launch the application with the given list of providers
 ///
 void mainCommon(List<InheritedProvider> providers) {
-  final child = MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: Booking(
-      slot: BikeSlot(
-        id: 'D-04',
-        station: Station(
-          id: 's1',
-          name: 'Veal Vong Park',
-          location: Location(
-            id: 'l1',
-            longitude: 104.9282,
-            latitude: 11.5564,
-            address: 'Veal Vong Park, Phnom Penh',
-          ),
-          totalSlot: 10,
-          slots: [],
-        ),
-        bike: Bicycle(id: 'b1', bikeNo: 'BK-2047'),
-      ),
-    ),
-  );
+  final child = MaterialApp(debugShowCheckedModeBanner: false, home: MyApp());
   runApp(
     providers.isEmpty
         ? child
@@ -72,7 +47,6 @@ class _MyAppState extends State<MyApp> {
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           currentIndex: _currentIndex,
-          type: BottomNavigationBarType.fixed,
           onTap: (index) {
             setState(() {
               _currentIndex = index;

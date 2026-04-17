@@ -1,4 +1,5 @@
 import 'package:g4_t1_velo_app/data/repositories/booking/booking_repository.dart';
+import 'package:g4_t1_velo_app/data/repositories/mock_store.dart';
 import 'package:g4_t1_velo_app/model/booking.dart';
 
 class BookingRepositoryMock implements BookingRepository {
@@ -15,6 +16,7 @@ class BookingRepositoryMock implements BookingRepository {
       status: BookingStatus.confirmed,
     );
     _bookings.add(created);
+    MockStore.reserveSlot(booking.slot.id, booking.user.id);
     return created;
   }
 }
