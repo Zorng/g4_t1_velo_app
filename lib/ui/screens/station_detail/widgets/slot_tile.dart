@@ -3,9 +3,14 @@ import 'package:g4_t1_velo_app/model/bike_slot.dart';
 import 'package:g4_t1_velo_app/ui/theme/theme.dart';
 
 class SlotTile extends StatelessWidget {
-  const SlotTile({super.key, required this.slot});
+  const SlotTile({
+    super.key,
+    required this.slot,
+    this.onTap,
+  });
 
   final BikeSlot slot;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +25,7 @@ class SlotTile extends StatelessWidget {
     return Card(
       margin: EdgeInsets.zero,
       child: ListTile(
+        onTap: isAvailable ? onTap : null,
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 16,
           vertical: 12,
