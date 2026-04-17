@@ -3,6 +3,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:g4_t1_velo_app/model/station.dart';
 import 'package:g4_t1_velo_app/ui/screens/map/viewmodel/map_screen_view_model.dart';
 import 'package:g4_t1_velo_app/ui/screens/map/widgets/station_marker.dart';
+import 'package:g4_t1_velo_app/ui/screens/booking/booking.dart';
 import 'package:g4_t1_velo_app/ui/screens/station_detail/station_detail_screen.dart';
 import 'package:g4_t1_velo_app/ui/theme/theme.dart';
 import 'package:g4_t1_velo_app/utils/async_value.dart';
@@ -37,28 +38,28 @@ class MapScreenContent extends StatelessWidget {
               ),
               if (stationState.state == AsyncValueState.success)
                 MarkerLayer(
-                  markers: viewModel.stations.map((station) {
-                    return Marker(
-                      point: LatLng(
-                        station.location.latitude,
-                        station.location.longitude,
-                      ),
-                      width: 72,
-                      height: 84,
-                      child: StationMarker(
-                        station: station,
-                        onTap: () => _openStationDetail(context, station),
-                      ),
-                    );
-                  }).toList(growable: false),
+                  markers: viewModel.stations
+                      .map((station) {
+                        return Marker(
+                          point: LatLng(
+                            station.location.latitude,
+                            station.location.longitude,
+                          ),
+                          width: 72,
+                          height: 84,
+                          child: StationMarker(
+                            station: station,
+                            onTap: () => _openStationDetail(context, station),
+                          ),
+                        );
+                      })
+                      .toList(growable: false),
                 ),
             ],
           ),
           const _MapHeader(),
           if (stationState.state == AsyncValueState.loading)
-            const _CenteredOverlay(
-              child: CircularProgressIndicator(),
-            ),
+            const _CenteredOverlay(child: CircularProgressIndicator()),
           if (stationState.state == AsyncValueState.error)
             _CenteredOverlay(
               child: _MapErrorState(
@@ -74,7 +75,14 @@ class MapScreenContent extends StatelessWidget {
   void _openStationDetail(BuildContext context, Station station) {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
-        builder: (_) => StationDetailScreen(stationId: station.id),
+        builder: (_) => StationDetailScreen(
+          stationId: station.id,
+          onSlotTap: (slot, stationName) => Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (_) => Booking(slotId: slot, stationName: stationName),
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -136,10 +144,7 @@ class _CenteredOverlay extends StatelessWidget {
 }
 
 class _MapErrorState extends StatelessWidget {
-  const _MapErrorState({
-    required this.message,
-    required this.onRetry,
-  });
+  const _MapErrorState({required this.message, required this.onRetry});
 
   final String message;
   final Future<void> Function() onRetry;
@@ -154,10 +159,7 @@ class _MapErrorState extends StatelessWidget {
           children: [
             Text(message, textAlign: TextAlign.center),
             const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: onRetry,
-              child: const Text('Retry'),
-            ),
+            ElevatedButton(onPressed: onRetry, child: const Text('Retry')),
           ],
         ),
       ),

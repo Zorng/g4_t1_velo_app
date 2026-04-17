@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:g4_t1_velo_app/ui/screens/booking/booking.dart';
 import 'package:g4_t1_velo_app/ui/screens/station_detail/station_detail_screen.dart';
 import 'package:g4_t1_velo_app/ui/theme/theme.dart';
 
@@ -61,7 +62,15 @@ class _StationLaunchTile extends StatelessWidget {
         onTap: () {
           Navigator.of(context).push(
             MaterialPageRoute<void>(
-              builder: (_) => StationDetailScreen(stationId: stationId),
+              builder: (_) => StationDetailScreen(
+                stationId: stationId,
+                onSlotTap: (slot, stationName) => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) =>
+                        Booking(slotId: slot, stationName: stationName),
+                  ),
+                ),
+              ),
             ),
           );
         },
