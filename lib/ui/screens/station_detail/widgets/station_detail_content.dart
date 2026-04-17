@@ -12,12 +12,21 @@ import 'station_header.dart';
 class StationDetailContent extends StatelessWidget {
   const StationDetailContent({super.key, this.onSlotTap});
 
-  final ValueChanged<BikeSlot>? onSlotTap;
+  // Hardcoded for demo
+  static const _currentUserId = 'user_mock_1';
+
+  final Future<void> Function(String slotId, String stationName)? onSlotTap;
 
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<StationDetailViewModel>();
     final stationState = viewModel.stationState;
+    final wrappedOnSlotTap = onSlotTap == null
+        ? null
+        : (BikeSlot slot, String stationName) async {
+            await onSlotTap!(slot.id, stationName);
+            if (context.mounted) await viewModel.load();
+          };
 
     return Scaffold(
       appBar: AppBar(title: const Text('Station Details')),
@@ -41,7 +50,10 @@ class StationDetailContent extends StatelessWidget {
             station: station,
             availableBikeCount: viewModel.availableBikeCount,
             emptySlotCount: viewModel.emptySlotCount,
-            onSlotTap: onSlotTap,
+            currentUserId: _currentUserId,
+            onSlotTap: wrappedOnSlotTap == null
+                ? null
+                : (slot) => wrappedOnSlotTap(slot, station.name),
           );
         },
       ),
@@ -54,13 +66,15 @@ class _LoadedStationDetail extends StatelessWidget {
     required this.station,
     required this.availableBikeCount,
     required this.emptySlotCount,
+    this.currentUserId,
     this.onSlotTap,
   });
 
   final Station station;
   final int availableBikeCount;
   final int emptySlotCount;
-  final ValueChanged<BikeSlot>? onSlotTap;
+  final String? currentUserId;
+  final Future<void> Function(BikeSlot)? onSlotTap;
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +92,7 @@ class _LoadedStationDetail extends StatelessWidget {
         for (final slot in station.slots) ...[
           SlotTile(
             slot: slot,
+            currentUserId: currentUserId,
             onTap: onSlotTap == null ? null : () => onSlotTap!(slot),
           ),
           const SizedBox(height: 16),

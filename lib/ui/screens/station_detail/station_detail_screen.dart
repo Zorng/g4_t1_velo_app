@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:g4_t1_velo_app/data/repositories/station/station_repository.dart';
-import 'package:g4_t1_velo_app/model/bike_slot.dart';
 import 'package:g4_t1_velo_app/ui/screens/station_detail/viewmodel/station_detail_view_model.dart';
 import 'package:g4_t1_velo_app/ui/screens/station_detail/widgets/station_detail_content.dart';
 import 'package:provider/provider.dart';
@@ -13,7 +12,7 @@ class StationDetailScreen extends StatelessWidget {
   });
 
   final String stationId;
-  final ValueChanged<BikeSlot>? onSlotTap;
+  final Future<void> Function(String slotId, String stationName)? onSlotTap;
 
   @override
   Widget build(BuildContext context) {
