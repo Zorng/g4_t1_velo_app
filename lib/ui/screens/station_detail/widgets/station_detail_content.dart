@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:g4_t1_velo_app/model/bike_slot.dart';
 import 'package:g4_t1_velo_app/model/station.dart';
 import 'package:g4_t1_velo_app/ui/screens/station_detail/viewmodel/station_detail_view_model.dart';
+import 'package:g4_t1_velo_app/ui/theme/theme.dart';
 import 'package:g4_t1_velo_app/utils/async_value.dart';
 import 'package:provider/provider.dart';
 
@@ -87,6 +88,11 @@ class _LoadedStationDetail extends StatelessWidget {
           totalSlotCount: station.slots.length,
           availableBikeCount: availableBikeCount,
           emptySlotCount: emptySlotCount,
+        ),
+        const SizedBox(height: 16),
+        Text(
+          'Select a bike',
+          style: AppTextStyles.label.copyWith(fontWeight: FontWeight.w400),
         ),
         const SizedBox(height: 16),
         for (final slot in station.slots) ...[

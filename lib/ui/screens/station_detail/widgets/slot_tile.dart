@@ -61,39 +61,38 @@ class SlotTile extends StatelessWidget {
                 side: BorderSide(color: Colors.blue.withValues(alpha: 0.4)),
               )
             : null,
-        color: isYourBooking
-            ? Colors.blue.withValues(alpha: 0.05)
-            : null,
+        color: isYourBooking ? Colors.blue.withValues(alpha: 0.05) : null,
         child: ListTile(
           onTap: tappable ? onTap : null,
-          mouseCursor:
-              tappable ? SystemMouseCursors.click : SystemMouseCursors.basic,
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 12,
-        ),
-        leading: CircleAvatar(
-          backgroundColor: statusColor.withValues(alpha: 0.14),
-          child: Icon(statusIcon, color: statusColor),
-        ),
-        title: Text('Slot ${slot.id}'),
-        subtitle: Padding(
-          padding: const EdgeInsets.only(top: 6),
-          child: Text(bikeLabel),
-        ),
-        trailing: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          decoration: BoxDecoration(
-            color: statusColor.withValues(alpha: 0.12),
-            borderRadius: BorderRadius.circular(999),
+          mouseCursor: tappable
+              ? SystemMouseCursors.click
+              : SystemMouseCursors.basic,
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 12,
           ),
-          child: Text(
-            statusText,
-            style: TextStyle(color: statusColor, fontWeight: FontWeight.w600),
+          leading: CircleAvatar(
+            backgroundColor: statusColor.withValues(alpha: 0.14),
+            child: Icon(statusIcon, color: statusColor),
+          ),
+          title: Text('Slot ${slot.id}'),
+          subtitle: Padding(
+            padding: const EdgeInsets.only(top: 6),
+            child: Text(bikeLabel),
+          ),
+          trailing: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            decoration: BoxDecoration(
+              color: statusColor.withValues(alpha: 0.12),
+              borderRadius: BorderRadius.circular(999),
+            ),
+            child: Text(
+              statusText,
+              style: TextStyle(color: statusColor, fontWeight: FontWeight.w600),
+            ),
           ),
         ),
       ),
-    ),
-  );
+    );
   }
 }

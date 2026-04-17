@@ -59,6 +59,7 @@ class _SummaryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      constraints: const BoxConstraints(minHeight: 120),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -66,12 +67,18 @@ class _SummaryCard extends StatelessWidget {
         border: Border.all(color: AppColors.greyLight),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(label, style: AppTextStyles.label.copyWith(fontSize: 14)),
+          Text(
+            label,
+            textAlign: TextAlign.center,
+            style: AppTextStyles.label.copyWith(fontSize: 14),
+          ),
           const SizedBox(height: 10),
           Text(
             value,
+            textAlign: TextAlign.center,
             style: AppTextStyles.title.copyWith(
               fontSize: 24,
               color: valueColor,
