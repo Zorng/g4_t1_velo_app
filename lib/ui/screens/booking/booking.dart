@@ -9,8 +9,9 @@ import 'package:provider/provider.dart';
 
 class Booking extends StatelessWidget {
   final String slotId;
+  final String stationName;
 
-  const Booking({super.key, required this.slotId});
+  const Booking({super.key, required this.slotId, required this.stationName});
 
   @override
   Widget build(BuildContext context) {
@@ -31,10 +32,11 @@ class Booking extends StatelessWidget {
       ),
       body: ChangeNotifierProvider(
         create: (context) => BookingViewModel(
-          context.read<UsersRepository>(),
-          context.read<BookingRepository>(),
-          context.read<BikeSlotRepository>(),
-          slotId,
+          usersRepository: context.read<UsersRepository>(),
+          bookingRepository: context.read<BookingRepository>(),
+          bikeSlotRepository: context.read<BikeSlotRepository>(),
+          slotId: slotId,
+          stationName: stationName,
         ),
         child: const BookingContent(),
       ),

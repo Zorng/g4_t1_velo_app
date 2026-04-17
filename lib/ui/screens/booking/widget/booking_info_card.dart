@@ -5,8 +5,9 @@ import 'package:g4_t1_velo_app/ui/theme/theme.dart';
 
 class BookingInfoCard extends StatelessWidget {
   final BikeSlot slot;
+  final String stationName;
 
-  const BookingInfoCard({super.key, required this.slot});
+  const BookingInfoCard({super.key, required this.slot, required this.stationName});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,7 @@ class BookingInfoCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          BookingInfoTile(label: 'Station Detail', value: slot.station.name),
+          BookingInfoTile(label: 'Station Detail', value: stationName),
           Divider(height: 1, color: AppColors.greyLight),
           BookingInfoTile(label: 'Dock Number', value: slot.id),
           Divider(height: 1, color: AppColors.greyLight),

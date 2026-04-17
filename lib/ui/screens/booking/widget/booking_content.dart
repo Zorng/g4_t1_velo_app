@@ -37,19 +37,33 @@ class BookingContent extends StatelessWidget {
 
     if (vm.confirmValue?.state == AsyncValueState.success) {
       final bikeNo = vm.slot?.bike?.bikeNo ?? '';
-      Navigator.of(context).pop();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Bike No. $bikeNo Successfully Booked')),
-      );
-    } else if (vm.confirmValue?.state == AsyncValueState.error) {
+      //pop back to the map screen
+      Navigator.of(context).popUntil((route) => route.isFirst);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(
-            vm.confirmValue!.error?.toString() ?? 'Booking failed',
-          ),
-          backgroundColor: Colors.red,
+          content: Text('Bike No. $bikeNo Successfully Booked'),
+          backgroundColor: Colors.green,
         ),
       );
+    } else if (vm.confirmValue?.state == AsyncValueState.error) {
+      final error = vm.confirmValue!.error;
+      if (error is BookingError) {
+        if (error == BookingError.alreadyBooked) {
+          Navigator.of(context).popUntil((route) => route.isFirst);
+        } else {
+          Navigator.of(context).pop();
+        }
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(error.message), backgroundColor: Colors.orange),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(error?.toString() ?? 'Booking failed'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 
@@ -67,10 +81,7 @@ class BookingContent extends StatelessWidget {
           children: [
             const Text('Failed to load booking details'),
             const SizedBox(height: 12),
-            TextButton(
-              onPressed: vm.retry,
-              child: const Text('Retry'),
-            ),
+            TextButton(onPressed: vm.retry, child: const Text('Retry')),
           ],
         ),
       );
@@ -92,7 +103,7 @@ class BookingContent extends StatelessWidget {
           const BookingHeader(),
           const SizedBox(height: 24),
 
-          BookingInfoCard(slot: vm.slot!),
+          BookingInfoCard(slot: vm.slot!, stationName: vm.stationName),
           const SizedBox(height: 28),
 
           SectionTitle(
@@ -124,8 +135,9 @@ class BookingContent extends StatelessWidget {
 
           PrimaryButton(
             label: 'Confirm Booking',
-            onPressed:
-                isConfirming ? null : () => _onConfirmPressed(context, vm),
+            onPressed: isConfirming
+                ? null
+                : () => _onConfirmPressed(context, vm),
           ),
           const SizedBox(height: 12),
 

@@ -8,23 +8,42 @@ import 'package:g4_t1_velo_app/model/pass.dart';
 import 'package:g4_t1_velo_app/model/users.dart';
 import 'package:g4_t1_velo_app/ui/utils/async_value.dart';
 
+enum BookingError {
+  alreadyBooked,
+  bikeUnavailable;
+
+  String get message {
+    switch (this) {
+      case BookingError.alreadyBooked:
+        return 'You already have an active booking';
+
+      case BookingError.bikeUnavailable:
+        return 'Bike is no longer available';
+    }
+  }
+}
+
 class BookingViewModel extends ChangeNotifier {
+  BookingViewModel({
+    required UsersRepository usersRepository,
+    required BookingRepository bookingRepository,
+    required BikeSlotRepository bikeSlotRepository,
+    required this.slotId,
+    required this.stationName,
+  })  : _usersRepository = usersRepository,
+        _bookingRepository = bookingRepository,
+        _bikeSlotRepository = bikeSlotRepository {
+    _init();
+  }
+
   final UsersRepository _usersRepository;
   final BookingRepository _bookingRepository;
   final BikeSlotRepository _bikeSlotRepository;
   final String slotId;
+  final String stationName;
 
-  // Hardcoded for demo — replace with auth user id when auth is implemented
+  // Hardcoded for demo 
   static const String _mockUserId = 'user_mock_1';
-
-  BookingViewModel(
-    this._usersRepository,
-    this._bookingRepository,
-    this._bikeSlotRepository,
-    this.slotId,
-  ) {
-    _init();
-  }
 
   AsyncValue<BikeSlot> _slotValue = AsyncValue.loading();
   AsyncValue<Pass?> _activePassValue = AsyncValue.loading();
@@ -37,12 +56,11 @@ class BookingViewModel extends ChangeNotifier {
 
   BikeSlot? get slot => _slotValue.data;
 
-  Pass? get activePass =>
-      _activePassValue.state == AsyncValueState.success
-          ? _activePassValue.data
-          : null;
+  Pass? get activePass => _activePassValue.state == AsyncValueState.success
+      ? _activePassValue.data
+      : null;
 
-  bool get hasPass => activePass != null;
+  bool get hasPass => activePass != null; // true if active pass is not null
 
   bool get hasActiveBooking =>
       _currentBookingIdValue.state == AsyncValueState.success &&
@@ -111,7 +129,7 @@ class BookingViewModel extends ChangeNotifier {
     try {
       // Prevent booking if user already has an active booking
       if (hasActiveBooking) {
-        _confirmValue = AsyncValue.error('You already have an active booking');
+        _confirmValue = AsyncValue.error(BookingError.alreadyBooked);
         notifyListeners();
         return;
       }
@@ -120,7 +138,7 @@ class BookingViewModel extends ChangeNotifier {
       final slot = await _bikeSlotRepository.getSlot(slotId);
 
       if (slot.status != SlotStatus.available) {
-        _confirmValue = AsyncValue.error('Bike is no longer available');
+        _confirmValue = AsyncValue.error(BookingError.bikeUnavailable);
         notifyListeners();
         return;
       }
