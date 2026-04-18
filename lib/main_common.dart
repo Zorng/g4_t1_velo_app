@@ -6,16 +6,15 @@ import 'package:g4_t1_velo_app/ui/screens/subscriptions/subscriptions_screen.dar
 import 'package:g4_t1_velo_app/ui/theme/theme.dart';
 import 'package:provider/provider.dart';
 
-
 ///
 /// Launch the application with the given list of providers
 ///
 void mainCommon(List<InheritedProvider> providers) {
+  final child = MaterialApp(debugShowCheckedModeBanner: false, home: MyApp());
   runApp(
-    MultiProvider(
-      providers: providers,
-      child: MaterialApp(debugShowCheckedModeBanner: false, home: MyApp()),
-    ),
+    providers.isEmpty
+        ? child
+        : MultiProvider(providers: providers, child: child),
   );
 }
 
@@ -30,10 +29,10 @@ class _MyAppState extends State<MyApp> {
   int _currentIndex = 2; // map screen as default entry
 
   final List<Widget> _pages = [
-   AccountScreen(),
-   JourneyScreen(),
-   MapScreen(),
-   SubscriptionsScreen()
+    AccountScreen(),
+    JourneyScreen(),
+    MapScreen(),
+    SubscriptionsScreen(),
   ];
 
   @override
@@ -46,6 +45,7 @@ class _MyAppState extends State<MyApp> {
         body: _pages[_currentIndex],
 
         bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
           currentIndex: _currentIndex,
           onTap: (index) {
             setState(() {
@@ -58,11 +58,11 @@ class _MyAppState extends State<MyApp> {
               icon: Icon(Icons.account_circle_rounded),
               label: 'Account',
             ),
-            BottomNavigationBarItem(icon: Icon(Icons.directions_bike), label: 'Journey'),
             BottomNavigationBarItem(
-              icon: Icon(Icons.map),
-              label: 'Map',
+              icon: Icon(Icons.directions_bike),
+              label: 'Journey',
             ),
+            BottomNavigationBarItem(icon: Icon(Icons.map), label: 'Map'),
             BottomNavigationBarItem(
               icon: Icon(Icons.local_play),
               label: 'Subscriptions',
