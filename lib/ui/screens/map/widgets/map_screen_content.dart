@@ -2,18 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:g4_t1_velo_app/model/station.dart';
 import 'package:g4_t1_velo_app/ui/screens/map/viewmodel/map_screen_view_model.dart';
+import 'package:g4_t1_velo_app/ui/screens/map/widgets/search_bar.dart';
 import 'package:g4_t1_velo_app/ui/screens/map/widgets/station_marker.dart';
 import 'package:g4_t1_velo_app/ui/screens/booking/booking.dart';
 import 'package:g4_t1_velo_app/ui/screens/station_detail/station_detail_screen.dart';
-import 'package:g4_t1_velo_app/ui/theme/theme.dart';
 import 'package:g4_t1_velo_app/utils/async_value.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 
-class MapScreenContent extends StatelessWidget {
+class MapScreenContent extends StatefulWidget {
   const MapScreenContent({super.key});
 
   static const _initialCenter = LatLng(11.5715, 104.9228);
+
+  @override
+  State<MapScreenContent> createState() => _MapScreenContentState();
+}
+
+class _MapScreenContentState extends State<MapScreenContent> {
+  final MapController _mapController = MapController();
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +31,9 @@ class MapScreenContent extends StatelessWidget {
       body: Stack(
         children: [
           FlutterMap(
+            mapController: _mapController,
             options: const MapOptions(
-              initialCenter: _initialCenter,
+              initialCenter: MapScreenContent._initialCenter,
               initialZoom: 14,
               interactionOptions: InteractionOptions(
                 flags: InteractiveFlag.all,
@@ -45,8 +53,8 @@ class MapScreenContent extends StatelessWidget {
                             station.location.latitude,
                             station.location.longitude,
                           ),
-                          width: 72,
-                          height: 84,
+                          width: 180,
+                          height: 110,
                           child: StationMarker(
                             station: station,
                             onTap: () => _openStationDetail(context, station),
@@ -57,7 +65,10 @@ class MapScreenContent extends StatelessWidget {
                 ),
             ],
           ),
-          const _MapHeader(),
+          MapSearchBar(
+            optionsBuilder: viewModel.searchStations,
+            onSelected: _moveToStation,
+          ),
           if (stationState.state == AsyncValueState.loading)
             const _CenteredOverlay(child: CircularProgressIndicator()),
           if (stationState.state == AsyncValueState.error)
@@ -72,6 +83,13 @@ class MapScreenContent extends StatelessWidget {
     );
   }
 
+  void _moveToStation(Station station) {
+    _mapController.move(
+      LatLng(station.location.latitude, station.location.longitude),
+      16,
+    );
+  }
+
   void _openStationDetail(BuildContext context, Station station) {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
@@ -80,47 +98,6 @@ class MapScreenContent extends StatelessWidget {
           onSlotTap: (slot, stationName) => Navigator.of(context).push(
             MaterialPageRoute(
               builder: (_) => Booking(slotId: slot, stationName: stationName),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _MapHeader extends StatelessWidget {
-  const _MapHeader();
-
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.92),
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.08),
-                blurRadius: 18,
-                offset: const Offset(0, 6),
-              ),
-            ],
-          ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Map', style: AppTextStyles.title.copyWith(fontSize: 24)),
-                const SizedBox(height: 4),
-                Text(
-                  'Tap a station marker to open station details.',
-                  style: AppTextStyles.label.copyWith(fontSize: 14),
-                ),
-              ],
             ),
           ),
         ),

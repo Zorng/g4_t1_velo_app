@@ -16,6 +16,18 @@ class MapScreenViewModel extends ChangeNotifier {
 
   List<Station> get stations => _stationState.data ?? const [];
 
+  List<Station> searchStations(String query) {
+    final normalizedQuery = query.trim().toLowerCase();
+    if (normalizedQuery.isEmpty) {
+      return const [];
+    }
+
+    return stations.where((station) {
+      return station.name.toLowerCase().contains(normalizedQuery) ||
+          station.location.address.toLowerCase().contains(normalizedQuery);
+    }).toList(growable: false);
+  }
+
   Future<void> load() async {
     _stationState = AsyncValue.loading();
     notifyListeners();
