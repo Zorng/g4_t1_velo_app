@@ -90,8 +90,8 @@ class _MapScreenContentState extends State<MapScreenContent> {
     );
   }
 
-  void _openStationDetail(BuildContext context, Station station) {
-    Navigator.of(context).push(
+  Future<void> _openStationDetail(BuildContext context, Station station) async {
+    await Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (_) => StationDetailScreen(
           stationId: station.id,
