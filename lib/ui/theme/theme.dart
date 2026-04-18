@@ -66,6 +66,8 @@ class AppTextStyles {
 /// Definition of App Theme.
 ///
 ThemeData appTheme = ThemeData(
+  appBarTheme: AppBarThemeData(backgroundColor: Colors.white),
+  bottomNavigationBarTheme: BottomNavigationBarThemeData(backgroundColor: Colors.white),
   fontFamily: 'Eesti',
   scaffoldBackgroundColor: Colors.white,
   primaryColor: Colors.orangeAccent
