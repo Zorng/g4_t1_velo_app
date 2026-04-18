@@ -103,6 +103,12 @@ class _MapScreenContentState extends State<MapScreenContent> {
         ),
       ),
     );
+
+    if (!mounted) {
+      return;
+    }
+
+    await this.context.read<MapScreenViewModel>().load();
   }
 }
 
