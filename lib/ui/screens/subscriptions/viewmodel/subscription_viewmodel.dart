@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:g4_t1_velo_app/data/repositories/pass/pass_repository.dart';
 import 'package:g4_t1_velo_app/model/pass.dart';
-import 'package:g4_t1_velo_app/ui/utils/async_value.dart';
+import 'package:g4_t1_velo_app/utils/async_value.dart';
 
 class SubscriptionViewModel extends ChangeNotifier {
   final PassRepository _passRepository;

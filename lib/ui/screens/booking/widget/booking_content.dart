@@ -10,7 +10,7 @@ import 'package:g4_t1_velo_app/ui/screens/booking/widget/pass_applied_card.dart'
 import 'package:g4_t1_velo_app/ui/widgets/primary_button.dart';
 import 'package:g4_t1_velo_app/ui/widgets/selectable_card.dart';
 import 'package:g4_t1_velo_app/ui/screens/booking/widget/section_title.dart';
-import 'package:g4_t1_velo_app/ui/utils/async_value.dart';
+import 'package:g4_t1_velo_app/utils/async_value.dart';
 import 'package:provider/provider.dart';
 
 class BookingContent extends StatelessWidget {

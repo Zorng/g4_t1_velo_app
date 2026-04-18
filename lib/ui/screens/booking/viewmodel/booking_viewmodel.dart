@@ -6,7 +6,7 @@ import 'package:g4_t1_velo_app/model/bike_slot.dart';
 import 'package:g4_t1_velo_app/model/booking.dart';
 import 'package:g4_t1_velo_app/model/pass.dart';
 import 'package:g4_t1_velo_app/model/users.dart';
-import 'package:g4_t1_velo_app/ui/utils/async_value.dart';
+import 'package:g4_t1_velo_app/utils/async_value.dart';
 
 enum BookingError {
   alreadyBooked,
